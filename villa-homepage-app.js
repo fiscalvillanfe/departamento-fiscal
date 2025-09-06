@@ -12,7 +12,7 @@ function openDrawer(){ drawer.classList.add('open'); scrim.classList.add('show')
 function closeDrawer(){ drawer.classList.remove('open'); scrim.classList.remove('show'); hamburger.setAttribute('aria-expanded','false'); drawer.setAttribute('aria-hidden','true'); }
 
 hamburger.addEventListener('click', openDrawer);
-drawerClose.addEventListener('click', closeDrawer);
+drawerClose?.addEventListener('click', closeDrawer);
 scrim.addEventListener('click', closeDrawer);
 window.addEventListener('keydown', (e)=>{ if (e.key==='Escape') closeDrawer(); });
 
@@ -24,7 +24,7 @@ rootBtn?.addEventListener('click', ()=>{
   rootBtn.setAttribute('aria-expanded', String(open));
 });
 document.addEventListener('click', (e)=>{
-  if (!dropdown.contains(e.target) && e.target !== rootBtn){
+  if (dropdown && !dropdown.contains(e.target) && e.target !== rootBtn){
     dropdown.classList.remove('open');
     rootBtn.setAttribute('aria-expanded','false');
   }
@@ -50,17 +50,17 @@ function closeLogin(){
   loginMsg.textContent = '';
   loginForm.reset();
 }
-loginOpen.addEventListener('click', openLogin);
-loginClose.addEventListener('click', closeLogin);
-loginModal.addEventListener('click', (e)=>{ if (e.target===loginModal) closeLogin(); });
+loginOpen?.addEventListener('click', openLogin);
+loginClose?.addEventListener('click', closeLogin);
+loginModal?.addEventListener('click', (e)=>{ if (e.target===loginModal) closeLogin(); });
 window.addEventListener('keydown', (e)=>{ if (e.key==='Escape' && loginModal.classList.contains('show')) closeLogin(); });
 
 // ===== Validação com hash (sem expor texto puro) =====
-// Salt fixo e hashes pré-computados (SHA-256 do salt + valor)
+// Salt fixo e hashes pré-computados (SHA-256 do SALT + valor)
 const SALT = 'villa-2025-09';
-// username: MATHEUS
+// username esperado: MATHEUS  -> sha256(SALT+u)
 const USER_HASH_HEX = 'edae7d25196badfe2562198f7f3173abb74f67e83895a696a5fff907e67a8e8e';
-// password: @MatheusSM18"
+// senha esperada: @MatheusSM18" -> sha256(SALT+p)
 const PASS_HASH_HEX = 'a70e3ab14f8f8645cac864137de2cc80b8c6e68bf2f633d70c2cb67c2a82eb37';
 
 async function sha256HexWithSalt(value){
@@ -71,7 +71,7 @@ async function sha256HexWithSalt(value){
   return Array.from(bytes).map(b=>b.toString(16).padStart(2,'0')).join('');
 }
 
-loginForm.addEventListener('submit', async (e)=>{
+loginForm?.addEventListener('submit', async (e)=>{
   e.preventDefault();
   loginMsg.textContent = '';
   const u = userField.value.trim();
